@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4402097759983639917}
   - component: {fileID: 3005310745146421886}
   - component: {fileID: 3073725161293202930}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: StartingGround
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -93,5 +93,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.1, y: 1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
