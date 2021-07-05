@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.PlayerLoop;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 namespace games.almost_purrfect.fastcube.behaviours
 {
     public class Player : MonoBehaviour
     {
-
         public List<Vector2> _inputBuffer;
 
-        [SerializeField]
-        private float moveDistance;
+        [SerializeField] private float moveDistance;
 
-        [SerializeField]
-        private float moveDuration;
+        [SerializeField] private float moveDuration;
 
-        [SerializeField]
-        private LayerMask groundCheckLayerMask;
+        [SerializeField] private LayerMask groundCheckLayerMask;
 
         private Vector3 _originalPosition;
 
@@ -31,10 +28,15 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         private float _currentMoveTime;
 
+        private Touch _swipeStartTouch;
+
         private void Start()
         {
             _inputBuffer = new List<Vector2>(5);
             _originalPosition = _targetPosition = transform.position;
+
+            TouchSimulation.Enable();
+            EnhancedTouchSupport.Enable();
         }
 
         private void FixedUpdate()
@@ -48,6 +50,13 @@ namespace games.almost_purrfect.fastcube.behaviours
             var dt = Time.deltaTime;
             var t = transform;
 
+            var touchInputVector = HandleTouchInput();
+
+            if (touchInputVector != Vector2.zero)
+            {
+                _inputBuffer.Add(touchInputVector);
+            }
+
             if (_inputBuffer.Count > 0)
             {
                 if (!_isMoving)
@@ -60,7 +69,8 @@ namespace games.almost_purrfect.fastcube.behaviours
                         _originalPosition = t.position;
                         _targetPosition = _originalPosition +
                                           new Vector3(
-                                              currentInput.x > 0f ? moveDistance : -moveDistance, 0f, 0f);
+                                              currentInput.x > 0f ? moveDistance : -moveDistance,
+                                              0f, 0f);
                     }
 
                     if (math.abs(currentInput.y) > .1f)
@@ -95,10 +105,65 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         public void OnMove(InputAction.CallbackContext context)
         {
-            if (!context.performed) return;
+            if (!context.performed || !enabled) return;
 
             var input = context.ReadValue<Vector2>();
             _inputBuffer.Add(input);
+        }
+
+        private Vector2 HandleTouchInput()
+        {
+            var verticalAxis = 0;
+            var horizontalAxis = 0;
+
+            Debug.Log($"Active fingers: {Touch.activeFingers.Count}");
+
+            if (Touch.activeFingers.Count != 1) return Vector2.zero;
+
+            var activeTouch = Touch.activeFingers[0].currentTouch;
+            Debug.Log($"Phase: {activeTouch.phase}");
+
+            if (activeTouch.phase == TouchPhase.Began)
+            {
+                _swipeStartTouch = activeTouch;
+            }
+
+            if (activeTouch.phase != TouchPhase.Ended) return Vector2.zero;
+
+            var swipeEndTouch = activeTouch;
+
+            var swipeVector = _swipeStartTouch.startScreenPosition -
+                              swipeEndTouch.screenPosition;
+
+            Debug.Log($"Swipe vector: {swipeVector}");
+
+            if (swipeVector.x < 0) // Right
+            {
+                if (swipeVector.y < 0) // Up (move forward)
+                {
+                    verticalAxis = 1;
+                }
+
+                if (swipeVector.y > 0) // Down (move right)
+                {
+                    horizontalAxis = 1;
+                }
+            }
+
+            if (swipeVector.x > 0) // Left
+            {
+                if (swipeVector.y < 0) // Up (move left)
+                {
+                    horizontalAxis = -1;
+                }
+
+                if (swipeVector.y > 0) // Down (move backwards)
+                {
+                    verticalAxis = -1;
+                }
+            }
+
+            return new Vector2(horizontalAxis, verticalAxis);
         }
     }
 }

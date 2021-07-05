@@ -30,6 +30,7 @@ namespace games.almost_purrfect.fastcube.behaviours
 
             if (lifetime == 0)
             {
+                LevelGeneratorBehaviour.NumberOfTilesInLevel--;
                 Destroy(gameObject);
                 return;
             }

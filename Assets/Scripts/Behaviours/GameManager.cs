@@ -8,11 +8,18 @@ namespace games.almost_purrfect.fastcube.behaviours
     public class GameManager : MonoBehaviour
     {
 
+        public static bool LevelReady;
+
         [SerializeField]
         private GameObject player;
 
         private void Update()
         {
+            if (player != null)
+            {
+                player.GetComponent<Player>().enabled = LevelReady;
+            }
+
             if (player != null && player.transform.position.y < -10f)
             {
                 StartCoroutine(GameOver());
