@@ -53,9 +53,5 @@ Assets/Firebase*
 /ProjectSettings/GvhProjectSettings.xml
 Assets/Editor Default Resources*
 Assets/ExternalDependencyManager*
-Assets/Plugins/Android*
-Assets/Plugins/iOS*
-Assets/Parse/Plugins*
 Assets/Parse.meta
-Assets/Plugins.meta
 Assets/StreamingAssets/google-services-desktop.json*
