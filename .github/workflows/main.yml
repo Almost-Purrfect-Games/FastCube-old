@@ -61,7 +61,7 @@ jobs:
       - name: Upload to Google Play Internal
         uses: maierj/fastlane-action@v2.0.1
         with:
-          lane: 'android alpha'
+          lane: 'android internal'
 #      - name: Cleanup to avoid storage limit
 #        if: always()
 #        uses: geekyeggo/delete-artifact@v1
