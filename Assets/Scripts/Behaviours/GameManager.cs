@@ -2,6 +2,7 @@
 using System.Collections;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,37 +12,36 @@ namespace games.almost_purrfect.fastcube.behaviours
     {
         public static bool LevelReady;
 
+        public static bool IsConnectedToGooglePlayServices;
+
+        [SerializeField]
+        private TextMeshProUGUI debugText;
+
         [SerializeField] private GameObject player;
 
-        private void InitializeGooglePlayServices()
+        private void Awake()
         {
-            var config = new PlayGamesClientConfiguration.Builder()
-                .RequestServerAuthCode(false)
-                .Build();
-
-            PlayGamesPlatform.InitializeInstance(config);
             PlayGamesPlatform.DebugLogEnabled = true;
             PlayGamesPlatform.Activate();
-            Debug.Log("Google Play Games initialized");
         }
 
         private void Start()
         {
-            InitializeGooglePlayServices();
+            SignInToGooglePlayServices();
+        }
 
+        private void SignInToGooglePlayServices()
+        {
             PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
             {
                 Debug.Log("Google Play sign in result");
                 Debug.Log(result);
 
-                if (result == SignInStatus.Success)
+                IsConnectedToGooglePlayServices = result switch
                 {
-                    Social.ReportProgress("CgkI5_2m85oQEAIQAg", 100.0, (r) =>
-                    {
-                        Debug.Log("Achievement reported");
-                        Debug.Log(r);
-                    });
-                }
+                    SignInStatus.Success => true,
+                    _ => false
+                };
             });
         }
 
@@ -56,6 +56,8 @@ namespace games.almost_purrfect.fastcube.behaviours
             {
                 StartCoroutine(GameOver());
             }
+
+            debugText.text = IsConnectedToGooglePlayServices ? "Connected" : "Not connected";
         }
 
         private IEnumerator GameOver()
