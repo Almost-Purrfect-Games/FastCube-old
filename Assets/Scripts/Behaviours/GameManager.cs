@@ -32,6 +32,12 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         private void SignInToGooglePlayServices()
         {
+            var config = new PlayGamesClientConfiguration.Builder()
+                .RequestServerAuthCode(false)
+                .Build();
+
+            PlayGamesPlatform.InitializeInstance(config);
+
             PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
             {
                 Debug.Log("Google Play sign in result");
@@ -57,7 +63,7 @@ namespace games.almost_purrfect.fastcube.behaviours
                 StartCoroutine(GameOver());
             }
 
-            debugText.text = IsConnectedToGooglePlayServices ? "Connected" : "Not connected";
+            debugText.text = IsConnectedToGooglePlayServices ? "Connected to Google Play Games" : "Not connected to Google Play Games";
         }
 
         private IEnumerator GameOver()
