@@ -19,12 +19,6 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         [SerializeField] private GameObject player;
 
-        private void Awake()
-        {
-            PlayGamesPlatform.DebugLogEnabled = true;
-            PlayGamesPlatform.Activate();
-        }
-
         private void Start()
         {
             SignInToGooglePlayServices();
@@ -32,11 +26,8 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         private void SignInToGooglePlayServices()
         {
-            var config = new PlayGamesClientConfiguration.Builder()
-                .RequestServerAuthCode(false)
-                .Build();
-
-            PlayGamesPlatform.InitializeInstance(config);
+            PlayGamesPlatform.DebugLogEnabled = true;
+            PlayGamesPlatform.Activate();
 
             PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptOnce, (result) =>
             {
