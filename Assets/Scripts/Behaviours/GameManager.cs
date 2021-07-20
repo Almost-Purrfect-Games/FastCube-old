@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Firebase.Analytics;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using TMPro;
@@ -13,6 +14,8 @@ namespace games.almost_purrfect.fastcube.behaviours
         public static bool LevelReady;
 
         public static bool IsConnectedToGooglePlayServices;
+
+        public static bool IsAnalyticsAvailable;
 
         [SerializeField]
         private TextMeshProUGUI debugText;
@@ -39,6 +42,14 @@ namespace games.almost_purrfect.fastcube.behaviours
                     SignInStatus.Success => true,
                     _ => false
                 };
+
+                if (IsConnectedToGooglePlayServices && IsAnalyticsAvailable)
+                {
+                    FirebaseAnalytics.SetUserProperty(
+                        FirebaseAnalytics.UserPropertySignUpMethod, "Google Play Game Services");
+                    FirebaseAnalytics.SetUserId(PlayGamesPlatform.Instance.GetUserDisplayName());
+                    FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLogin);
+                }
             });
         }
 
@@ -51,6 +62,10 @@ namespace games.almost_purrfect.fastcube.behaviours
 
             if (player != null && player.transform.position.y < -10f)
             {
+                if (IsAnalyticsAvailable)
+                {
+                    FirebaseAnalytics.LogEvent("died", new Parameter("how", "fall"));
+                }
                 StartCoroutine(GameOver());
             }
 

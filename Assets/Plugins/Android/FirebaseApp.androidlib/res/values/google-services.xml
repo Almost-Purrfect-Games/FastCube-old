@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_android_client_id,@string/default_web_client_id">
+  <string name="gcm_defaultSenderId" translatable="false">33440592906</string>
+  <string name="google_storage_bucket" translatable="false">fastcube-play-project-46189647.appspot.com</string>
+  <string name="project_id" translatable="false">fastcube-play-project-46189647</string>
+  <string name="google_api_key" translatable="false">AIzaSyALGyUS4FdTfbSFGDuIUCrXCJdN8yoQVCc</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyALGyUS4FdTfbSFGDuIUCrXCJdN8yoQVCc</string>
+  <string name="google_app_id" translatable="false">1:33440592906:android:832860ff97657576399bf3</string>
+  <string name="default_android_client_id" translatable="false">33440592906-4ojd1csqkcbg38rgvjcqo8tr0j29rfuu.apps.googleusercontent.com</string>
+  <string name="default_web_client_id" translatable="false">33440592906-8n448c2aqjodrhai4ftegjguucsanqt5.apps.googleusercontent.com</string>
+</resources>

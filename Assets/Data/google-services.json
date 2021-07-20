@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "33440592906",
+    "project_id": "fastcube-play-project-46189647",
+    "storage_bucket": "fastcube-play-project-46189647.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33440592906:android:832860ff97657576399bf3",
+        "android_client_info": {
+          "package_name": "games.almost_purrfect.fastcube"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33440592906-4ojd1csqkcbg38rgvjcqo8tr0j29rfuu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "games.almost_purrfect.fastcube",
+            "certificate_hash": "7ec01b7b034907c603732bbda086eb4ed6083886"
+          }
+        },
+        {
+          "client_id": "33440592906-5bgt40vqcvcvga8lp21jnr9e8qg1oh39.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "games.almost_purrfect.fastcube",
+            "certificate_hash": "0330126e91ae70636fe566512e53da4edd34d66f"
+          }
+        },
+        {
+          "client_id": "33440592906-guo8fk7v7hfiqkafb7n6nqr2cniqoidl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "games.almost_purrfect.fastcube",
+            "certificate_hash": "5efa393d2320ea2da16773ebf0776951577e1872"
+          }
+        },
+        {
+          "client_id": "33440592906-8n448c2aqjodrhai4ftegjguucsanqt5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALGyUS4FdTfbSFGDuIUCrXCJdN8yoQVCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "33440592906-8n448c2aqjodrhai4ftegjguucsanqt5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
