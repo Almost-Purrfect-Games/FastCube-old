@@ -30,3 +30,4 @@
 -dontwarn org.shaded.apache.**
 -dontwarn org.ietf.jgss.**
 -keep class com.shaded.fasterxml.jackson.** { *; }
+-keepattributes Signature
