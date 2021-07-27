@@ -17,13 +17,50 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         public static bool IsAnalyticsAvailable;
 
+        public static bool IsGamePlaying;
+
+        public static int CurrentScore = 0;
+
+        public static event Action OnGamePaused;
+
+        public static event Action OnGameUnpaused;
+
         [SerializeField]
         private TextMeshProUGUI debugText;
 
+        [SerializeField]
+        private TextMeshProUGUI scoreText;
+
         [SerializeField] private GameObject player;
+
+        public void PauseGame()
+        {
+            Debug.Log("GAME PAUSED");
+            IsGamePlaying = false;
+            OnGamePaused?.Invoke();
+        }
+
+        public void UnpauseGame()
+        {
+            Debug.Log("GAME UNPAUSED");
+            IsGamePlaying = true;
+            OnGameUnpaused?.Invoke();
+        }
+
+        public void RestartLevel()
+        {
+            CurrentScore = 0;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        public void ExitGame()
+        {
+            Application.Quit(0);
+        }
 
         private void Start()
         {
+            IsGamePlaying = true;
             SignInToGooglePlayServices();
         }
 
@@ -69,14 +106,14 @@ namespace games.almost_purrfect.fastcube.behaviours
                 StartCoroutine(GameOver());
             }
 
-            debugText.text = IsConnectedToGooglePlayServices ? "Connected to Google Play Games" : "Not connected to Google Play Games";
+            scoreText.text = CurrentScore.ToString();
         }
 
         private IEnumerator GameOver()
         {
             Destroy(player);
             yield return new WaitForSeconds(1f);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            RestartLevel();
 
             yield return null;
         }

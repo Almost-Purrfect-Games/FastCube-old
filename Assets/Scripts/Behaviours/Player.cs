@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -24,6 +26,8 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         private bool _isMoving;
 
+        private bool _wasMovingLastFrame;
+
         private bool _isGrounded;
 
         private float _currentMoveTime;
@@ -39,6 +43,18 @@ namespace games.almost_purrfect.fastcube.behaviours
             EnhancedTouchSupport.Enable();
         }
 
+        private void OnEnable()
+        {
+            GameManager.OnGamePaused += OnGamePaused;
+            GameManager.OnGameUnpaused += OnGameUnpaused;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnGamePaused -= OnGamePaused;
+            GameManager.OnGameUnpaused -= OnGameUnpaused;
+        }
+
         private void FixedUpdate()
         {
             var t = transform;
@@ -47,6 +63,9 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         private void Update()
         {
+            if (!GameManager.IsGamePlaying)
+                return;
+
             var dt = Time.deltaTime;
             var t = transform;
 
@@ -88,7 +107,7 @@ namespace games.almost_purrfect.fastcube.behaviours
 
             if (_isGrounded)
             {
-                if (_currentMoveTime <= moveDuration)
+                if (_currentMoveTime <= moveDuration && t.position != _targetPosition)
                 {
                     _currentMoveTime += dt;
                     t.position = math.lerp(_originalPosition, _targetPosition,
@@ -101,6 +120,13 @@ namespace games.almost_purrfect.fastcube.behaviours
                     _isMoving = false;
                 }
             }
+
+            if (!_isMoving && _wasMovingLastFrame)
+            {
+                GameManager.CurrentScore++;
+            }
+
+            _wasMovingLastFrame = _isMoving;
         }
 
         public void OnMove(InputAction.CallbackContext context)
@@ -119,6 +145,8 @@ namespace games.almost_purrfect.fastcube.behaviours
             Debug.Log($"Active fingers: {Touch.activeFingers.Count}");
 
             if (Touch.activeFingers.Count != 1) return Vector2.zero;
+
+            if (EventSystem.current.IsPointerOverGameObject()) return Vector2.zero;
 
             var activeTouch = Touch.activeFingers[0].currentTouch;
             Debug.Log($"Phase: {activeTouch.phase}");
@@ -164,6 +192,18 @@ namespace games.almost_purrfect.fastcube.behaviours
             }
 
             return new Vector2(horizontalAxis, verticalAxis);
+        }
+
+        private void OnGamePaused()
+        {
+            _inputBuffer.Clear();
+            _swipeStartTouch = default;
+            GetComponent<Rigidbody>().isKinematic = true;
+        }
+
+        private void OnGameUnpaused()
+        {
+            GetComponent<Rigidbody>().isKinematic = false;
         }
     }
 }
