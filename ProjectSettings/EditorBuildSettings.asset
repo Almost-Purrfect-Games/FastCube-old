@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 1399345b2d4b28d4895bc3b7f322f730
+  - enabled: 1
     path: Assets/Scenes/InfiniteRun.unity
     guid: dee215ea0b5cbf54cb4db75750e0a202
   m_configObjects: {}

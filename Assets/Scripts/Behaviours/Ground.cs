@@ -22,7 +22,7 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         private void Update()
         {
-            if (!_visitedByPlayer || !GameManager.IsGamePlaying) return;
+            if (!_visitedByPlayer || !GameStateManager.IsGamePlaying) return;
 
             var dt = Time.deltaTime;
 

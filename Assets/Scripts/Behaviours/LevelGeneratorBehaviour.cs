@@ -52,7 +52,8 @@ namespace games.almost_purrfect.fastcube.behaviours
 
             NumberOfTilesInLevel = initialTilesCount;
 
-            GameManager.LevelReady = true;
+            GameStateManager.LevelReady = true;
+            GameStateManager.IsGamePlaying = true;
         }
     }
 }

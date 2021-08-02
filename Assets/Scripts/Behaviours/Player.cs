@@ -45,14 +45,14 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         private void OnEnable()
         {
-            GameManager.OnGamePaused += OnGamePaused;
-            GameManager.OnGameUnpaused += OnGameUnpaused;
+            GameStateManager.OnGamePaused += OnGamePaused;
+            GameStateManager.OnGameUnpaused += OnGameUnpaused;
         }
 
         private void OnDisable()
         {
-            GameManager.OnGamePaused -= OnGamePaused;
-            GameManager.OnGameUnpaused -= OnGameUnpaused;
+            GameStateManager.OnGamePaused -= OnGamePaused;
+            GameStateManager.OnGameUnpaused -= OnGameUnpaused;
         }
 
         private void FixedUpdate()
@@ -63,7 +63,7 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         private void Update()
         {
-            if (!GameManager.IsGamePlaying)
+            if (!GameStateManager.IsGamePlaying)
                 return;
 
             var dt = Time.deltaTime;
@@ -123,7 +123,7 @@ namespace games.almost_purrfect.fastcube.behaviours
 
             if (!_isMoving && _wasMovingLastFrame)
             {
-                GameManager.CurrentScore++;
+                GameStateManager.CurrentScore++;
             }
 
             _wasMovingLastFrame = _isMoving;

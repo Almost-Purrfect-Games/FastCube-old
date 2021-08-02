@@ -24,7 +24,7 @@
 
 public static class GPGSIds
 {
-        public const string achievement_be_social = "CgkI5_2m85oQEAIQAg"; // <GPGSID>
+        public const string leaderboard_infinite_run = "CggIiujbyXwQAhAD"; // <GPGSID>
 
 }
 
