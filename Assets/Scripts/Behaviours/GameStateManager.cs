@@ -24,13 +24,15 @@ namespace games.almost_purrfect.fastcube.behaviours
             DontDestroyOnLoad(gameObject);
         }
 
-        public void PauseGame()
+        public static void PauseGame()
         {
+            if (!IsGamePlaying) return;
+
             IsGamePlaying = false;
             OnGamePaused?.Invoke();
         }
 
-        public void UnpauseGame()
+        public static void UnpauseGame()
         {
             IsGamePlaying = true;
             OnGameUnpaused?.Invoke();
