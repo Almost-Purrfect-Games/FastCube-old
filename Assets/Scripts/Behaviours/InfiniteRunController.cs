@@ -8,9 +8,8 @@ namespace games.almost_purrfect.fastcube.behaviours
 {
     public class InfiniteRunController : MonoBehaviour
     {
-        [SerializeField]
-        private TextMeshProUGUI scoreText;
-
+        [SerializeField] private TextMeshProUGUI scoreText;
+        [SerializeField] private TextMeshProUGUI gameOverScoreText;
         [SerializeField]
         private GameObject player;
 
@@ -18,6 +17,8 @@ namespace games.almost_purrfect.fastcube.behaviours
         [SerializeField] private GameObject[] deactivateOnUnpause;
         [SerializeField] private GameObject[] activateOnPause;
         [SerializeField] private GameObject[] activateOnUnpause;
+        [SerializeField] private GameObject[] activateOnGameOver;
+        [SerializeField] private GameObject[] deactivateOnGameOver;
 
         private void OnEnable()
         {
@@ -64,13 +65,25 @@ namespace games.almost_purrfect.fastcube.behaviours
             }
 
             scoreText.text = GameStateManager.CurrentScore.ToString();
+            gameOverScoreText.text = GameStateManager.CurrentScore.ToString();
         }
 
         private void GameOver()
         {
+            GameStateManager.IsGamePlaying = false;
             Destroy(player);
+            GameServicesManager.ReportScore(() =>
+            {
+                foreach (var o in deactivateOnGameOver)
+                {
+                    o.SetActive(false);
+                }
 
-            GameServicesManager.ReportScore(GameStateManager.RestartLevel);
+                foreach (var o in activateOnGameOver)
+                {
+                    o.SetActive(true);
+                }
+            });
         }
 
         private void OnGamePaused()
