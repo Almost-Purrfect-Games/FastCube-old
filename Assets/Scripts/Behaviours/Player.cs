@@ -36,6 +36,7 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         private void Start()
         {
+            GameStateManager.PlayerMoved = false;
             _inputBuffer = new List<Vector2>(5);
             _originalPosition = _targetPosition = transform.position;
 
@@ -78,6 +79,8 @@ namespace games.almost_purrfect.fastcube.behaviours
 
             if (_inputBuffer.Count > 0)
             {
+                GameStateManager.PlayerMoved = true;
+
                 if (!_isMoving)
                 {
                     var currentInput = _inputBuffer[0];

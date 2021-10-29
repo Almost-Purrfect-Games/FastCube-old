@@ -15,9 +15,15 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         public static int CurrentScore = 0;
 
+        public static bool PlayerMoved = false;
+
         public static event Action OnGamePaused;
 
         public static event Action OnGameUnpaused;
+
+        public static event Action OnHelpInvoked;
+
+        public static event Action OnHelpClosed;
 
         private void Start()
         {
@@ -36,6 +42,18 @@ namespace games.almost_purrfect.fastcube.behaviours
         {
             IsGamePlaying = true;
             OnGameUnpaused?.Invoke();
+        }
+
+        public static void InvokeHelp()
+        {
+            IsGamePlaying = false;
+            OnHelpInvoked?.Invoke();
+        }
+
+        public static void CloseHelp()
+        {
+            IsGamePlaying = true;
+            OnHelpClosed?.Invoke();
         }
 
         public void StartGame()

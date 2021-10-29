@@ -10,8 +10,8 @@ namespace games.almost_purrfect.fastcube.behaviours
     {
         [SerializeField] private TextMeshProUGUI scoreText;
         [SerializeField] private TextMeshProUGUI gameOverScoreText;
-        [SerializeField]
-        private GameObject player;
+        [SerializeField] private GameObject player;
+        [SerializeField] private GameObject helpButton;
 
         [SerializeField] private GameObject[] deactivateOnPause;
         [SerializeField] private GameObject[] deactivateOnUnpause;
@@ -19,17 +19,25 @@ namespace games.almost_purrfect.fastcube.behaviours
         [SerializeField] private GameObject[] activateOnUnpause;
         [SerializeField] private GameObject[] activateOnGameOver;
         [SerializeField] private GameObject[] deactivateOnGameOver;
+        [SerializeField] private GameObject[] deactivateOnHelpOpen;
+        [SerializeField] private GameObject[] deactivateOnHelpClose;
+        [SerializeField] private GameObject[] activateOnHelpOpen;
+        [SerializeField] private GameObject[] activateOnHelpClose;
 
         private void OnEnable()
         {
             GameStateManager.OnGamePaused += OnGamePaused;
             GameStateManager.OnGameUnpaused += OnGameUnpaused;
+            GameStateManager.OnHelpInvoked += OnHelpInvoked;
+            GameStateManager.OnHelpClosed += OnHelpClosed;
         }
 
         private void OnDisable()
         {
             GameStateManager.OnGamePaused -= OnGamePaused;
             GameStateManager.OnGameUnpaused -= OnGameUnpaused;
+            GameStateManager.OnHelpInvoked -= OnHelpInvoked;
+            GameStateManager.OnHelpClosed -= OnHelpClosed;
         }
 
         private void OnApplicationPause(bool pauseStatus)
@@ -48,6 +56,21 @@ namespace games.almost_purrfect.fastcube.behaviours
             }
         }
 
+        private void Start()
+        {
+            StartCoroutine(nameof(DelayedHelpButtonDisplay));
+        }
+
+        private IEnumerator DelayedHelpButtonDisplay()
+        {
+            yield return new WaitForSeconds(5);
+
+            if (!GameStateManager.PlayerMoved)
+            {
+                helpButton.SetActive(true);
+            }
+        }
+
         private void Update()
         {
             if (player != null)
@@ -62,6 +85,11 @@ namespace games.almost_purrfect.fastcube.behaviours
                     FirebaseAnalytics.LogEvent("died", new Parameter("how", "fall"));
                 }
                 GameOver();
+            }
+
+            if (GameStateManager.PlayerMoved)
+            {
+                helpButton.SetActive(false);
             }
 
             scoreText.text = GameStateManager.CurrentScore.ToString();
@@ -107,6 +135,32 @@ namespace games.almost_purrfect.fastcube.behaviours
             }
 
             foreach (var o in activateOnUnpause)
+            {
+                o.SetActive(true);
+            }
+        }
+
+        private void OnHelpInvoked()
+        {
+            foreach (var o in deactivateOnHelpOpen)
+            {
+                o.SetActive(false);
+            }
+
+            foreach (var o in activateOnHelpOpen)
+            {
+                o.SetActive(true);
+            }
+        }
+
+        private void OnHelpClosed()
+        {
+            foreach (var o in deactivateOnHelpClose)
+            {
+                o.SetActive(false);
+            }
+
+            foreach (var o in activateOnHelpClose)
             {
                 o.SetActive(true);
             }
