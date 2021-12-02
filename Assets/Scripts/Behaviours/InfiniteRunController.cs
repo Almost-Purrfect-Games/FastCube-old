@@ -24,6 +24,8 @@ namespace games.almost_purrfect.fastcube.behaviours
         [SerializeField] private GameObject[] activateOnHelpOpen;
         [SerializeField] private GameObject[] activateOnHelpClose;
 
+        [SerializeField] private AudioManager audioManager;
+
         private void OnEnable()
         {
             GameStateManager.OnGamePaused += OnGamePaused;
@@ -100,6 +102,7 @@ namespace games.almost_purrfect.fastcube.behaviours
         {
             GameStateManager.IsGamePlaying = false;
             Destroy(player);
+            audioManager.Rewind();
             GameServicesManager.ReportScore(() =>
             {
                 foreach (var o in deactivateOnGameOver)

@@ -20,6 +20,8 @@ namespace games.almost_purrfect.fastcube.behaviours
 
         [SerializeField] private LayerMask groundCheckLayerMask;
 
+        [SerializeField] private AudioManager audioManager;
+
         private Vector3 _originalPosition;
 
         private Vector3 _targetPosition;
@@ -33,6 +35,7 @@ namespace games.almost_purrfect.fastcube.behaviours
         private float _currentMoveTime;
 
         private Touch _swipeStartTouch;
+
 
         private void Start()
         {
@@ -126,6 +129,7 @@ namespace games.almost_purrfect.fastcube.behaviours
 
             if (!_isMoving && _wasMovingLastFrame)
             {
+                audioManager.PlaySongNote();
                 GameStateManager.CurrentScore++;
             }
 
